@@ -1,44 +1,60 @@
+using Healthmed.Appointment.Core.UseCases.AcceptAppointmentUseCase;
+using Healthmed.Appointment.Core.UseCases.CancelAppointmentUseCase;
+using Healthmed.Appointment.Core.UseCases.QueryAvailableAppointmentsUseCase;
+using Healthmed.Appointment.Core.UseCases.RefuseAppointmentUseCase;
+using Healthmed.Appointment.Core.UseCases.RegisterAppointmentUseCase;
+using Healthmed.Appointment.Core.UseCases.RegisterServicePeriod;
+using Healthmed.Appointment.Core.UseCases.ScheduleAppointmentUseCase;
+using Healthmed.Appointment.Infrastructure.WebAPI;
+using Microsoft.AspNetCore.Mvc;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.AddWebApi();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseWebApi();
 
-app.UseHttpsRedirection();
-
-var summaries = new[]
+app.MapGet("/appointments/available", async ([FromServices] IQueryAvailableAppointmentsUseCase useCase, [FromQuery] Guid doctorId) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    return Results.Ok(await useCase.QueryAppointments(doctorId));
+});
 
-app.MapGet("/weatherforecast", () =>
+app.MapPost("/servicePeriods", async ([FromServices] IRegisterServicePeriodUseCase useCase, [FromBody] RegisterServicePeriodRequest request) =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+    return Results.Ok(await useCase.RegisterServicePeriod(request));
+});
+
+app.MapPost("/appointments", async ([FromServices] IRegisterAppointmentUseCase useCase, [FromBody] RegisterAppointmentRequest request) =>
+{
+    return Results.Ok(await useCase.RegisterAppointment(request));
+});
+
+app.MapPatch("/appointments/schedule", async ([FromServices] IScheduleAppointmentUseCase useCase, ScheduleAppointmentRequest request) =>
+{
+    return Results.Ok(await useCase.ScheduleAppointment(request));
+});
+
+app.MapPatch("/appointments/accept", async ([FromServices] IAcceptAppointmentUseCase useCase, [FromQuery] Guid appointmentId) =>
+{
+    await useCase.AcceptAppointment(appointmentId);
+    return Results.Ok();
+});
+
+app.MapPatch("/appointments/refuse", async ([FromServices] IRefuseAppointmentUseCase useCase, [FromQuery] Guid appointmentId) =>
+{
+    await useCase.RefuseAppointment(appointmentId);
+    return Results.Ok();
+});
+
+app.MapPatch("/appointments/cancel", async ([FromServices] ICancelAppointmentUseCase useCase, [FromQuery] Guid appointmentId) =>
+{
+    await useCase.CancelAppointment(appointmentId);
+    return Results.Ok();
+});
 
 app.Run();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

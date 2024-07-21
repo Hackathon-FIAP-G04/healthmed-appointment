@@ -19,9 +19,7 @@ namespace Healthmed.Appointment.Core.UseCases.RegisterAppointmentUseCase
 
         public async Task<RegisterAppointmentResponse> RegisterAppointment(RegisterAppointmentRequest request)
         {
-            var period = new Period(
-                request.StartTime.Hour, request.StartTime.Minute, 
-                request.EndTime.Hour, request.EndTime.Minute);
+            var period = new SchedulingPeriod(request.StartTime, request.EndTime);
 
             var existingAppointment = await _repository.Exists(request.DoctorId, period);
 

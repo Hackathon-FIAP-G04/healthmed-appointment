@@ -3,9 +3,7 @@
     public class RegisterAppointmentRequest
     {
         public Guid DoctorId { get; set; }
-        public RegisterServicePeriodTimeRequest StartTime { get; set; }
-        public RegisterServicePeriodTimeRequest EndTime { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
     }
-
-    public record RegisterServicePeriodTimeRequest(int Hour, int Minute);
 }

@@ -4,7 +4,7 @@
     {
         Task<Appointment> Get(Id id);
 
-        Task<Appointment> Exists(Id doctorId, Period period);
+        Task<Appointment> Exists(Id doctorId, SchedulingPeriod period);
 
         Task<IEnumerable<Appointment>> GetAvailablesByDoctor(Id doctorId);
 

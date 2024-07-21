@@ -5,14 +5,14 @@ namespace Healthmed.Appointment.Core.Domain
 {
     public class Appointment : Entity<Id>, IAggregateRoot
     {
-        public Period Period { get; private set; }
+        public SchedulingPeriod Period { get; private set; }
         public Id DoctorId { get; private set; }
         public Id? PatientId { get; set; }
         public AppointmentStatus Status { get; private set; }
 
-        public bool Available => PatientId == null;
+        public bool Available => PatientId == null && Status == AppointmentStatus.Created;
 
-        public Appointment(Period period, Id doctorId)
+        public Appointment(SchedulingPeriod period, Id doctorId)
         {
             Period = period;
             DoctorId = doctorId;
@@ -22,7 +22,7 @@ namespace Healthmed.Appointment.Core.Domain
 
         public void Schedule(Id patientId)
         {
-            UnavailableAppointmentException.ThrowIf(PatientId != null || Status != AppointmentStatus.Created);
+            UnavailableAppointmentException.ThrowIf(!Available);
 
             PatientId = patientId;
             Status = AppointmentStatus.Scheduled;

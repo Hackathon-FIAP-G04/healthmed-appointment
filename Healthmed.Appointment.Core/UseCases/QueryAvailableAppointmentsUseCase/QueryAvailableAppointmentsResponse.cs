@@ -1,6 +1,4 @@
-﻿using Healthmed.Appointment.Core.Domain;
-
-namespace Healthmed.Appointment.Core.UseCases.QueryAvailableAppointmentsUseCase
+﻿namespace Healthmed.Appointment.Core.UseCases.QueryAvailableAppointmentsUseCase
 {
     public class QueryAvailableAppointmentsResponse
     {
@@ -16,15 +14,13 @@ namespace Healthmed.Appointment.Core.UseCases.QueryAvailableAppointmentsUseCase
 
     public class QueryAvailableAppointmentsResponseItem
     {
-        public QueryAvailableAppointmentsResponsePeriod StartTime { get; set; }
-        public QueryAvailableAppointmentsResponsePeriod EndTime { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
 
         public QueryAvailableAppointmentsResponseItem(Domain.Appointment appointment)
         {
-            StartTime = new(appointment.Period.StartHour, appointment.Period.StartMinute);
-            EndTime = new(appointment.Period.EndHour, appointment.Period.EndMinute);
+            StartTime = appointment.Period.StartTime;
+            EndTime = appointment.Period.EndTime;
         }
     }
-
-    public record QueryAvailableAppointmentsResponsePeriod(int hour, int minute);
 }

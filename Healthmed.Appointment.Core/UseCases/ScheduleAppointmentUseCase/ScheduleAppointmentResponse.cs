@@ -1,6 +1,4 @@
-﻿using Healthmed.Appointment.Core.Domain;
-
-namespace Healthmed.Appointment.Core.UseCases.ScheduleAppointmentUseCase
+﻿namespace Healthmed.Appointment.Core.UseCases.ScheduleAppointmentUseCase
 {
     public class ScheduleAppointmentResponse
     {
@@ -14,9 +12,9 @@ namespace Healthmed.Appointment.Core.UseCases.ScheduleAppointmentUseCase
             AppointmentId = appointment.Id;
             DoctorId = appointment.DoctorId;
             PatientId = appointment.PatientId;
-            Period = new(appointment.Period.StartHour, appointment.Period.StartMinute, appointment.Period.EndHour, appointment.Period.EndMinute);
+            Period = new(appointment.Period.StartTime, appointment.Period.EndTime);
         }
     }
 
-    public record ScheduleAppointmentPeriodResponse(int StartHour, int startMinute, int EndHour, int EndMinute);
+    public record ScheduleAppointmentPeriodResponse(DateTime StartTime, DateTime EndTime);
 }
