@@ -18,7 +18,7 @@ namespace Healthmed.Appointment.Infrastructure.MongoDb.Serializers
 
         public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, Price value)
         {
-            context.Writer.WriteDecimal128("price", value.Amount);
+            context.Writer.WriteDecimal128(value.Amount);
         }
 
         public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, object value)

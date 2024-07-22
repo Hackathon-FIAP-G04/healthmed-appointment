@@ -20,7 +20,9 @@ namespace Healthmed.Appointment.Infrastructure.Repositories
                 (x.Period.EndTime > period.StartTime &&
                     x.Period.EndTime < period.EndTime) ||
                 (x.Period.StartTime < period.EndTime &&
-                 x.Period.EndTime > period.EndTime))
+                 x.Period.EndTime > period.EndTime) ||
+                (x.Period.StartTime == period.StartTime &&
+                 x.Period.EndTime == period.EndTime))
              .FirstOrDefaultAsync();
 
             return appointments;
@@ -35,8 +37,16 @@ namespace Healthmed.Appointment.Infrastructure.Repositories
         {
             return await _appointments.Find(a =>
                     a.DoctorId == doctorId &&
-                    a.Available == true &&
+                    a.PatientId == null && 
+                    a.Status == AppointmentStatus.Created &&
                     a.Period.StartTime >= DateTime.Now)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Core.Domain.Appointment>> GetByPatient(Id patientId)
+        {
+            return await _appointments
+                .Find(x => x.PatientId == patientId)
                 .ToListAsync();
         }
 

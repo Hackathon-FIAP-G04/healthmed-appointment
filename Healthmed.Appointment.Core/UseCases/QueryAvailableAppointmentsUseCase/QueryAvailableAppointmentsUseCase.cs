@@ -20,7 +20,7 @@ namespace Healthmed.Appointment.Core.UseCases.QueryAvailableAppointmentsUseCase
         {
             var appointments = await _appointmentsRepository.GetAvailablesByDoctor(doctorId);
 
-            return new(appointments);
+            return new(appointments, doctorId);
         }
     }
 }

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Healthmed.Appointment.API",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Healthmed.Appointment.Core", "Healthmed.Appointment.Core\Healthmed.Appointment.Core.csproj", "{34ACE727-0A34-4775-9006-6545E1A2E1E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Healthmed.Appointment.Infrastructure", "Healthmed.Appointment.Infrastructure\Healthmed.Appointment.Infrastructure.csproj", "{FAF1D56B-FBEE-48A2-8A51-F10DC010B45C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Healthmed.Appointment.Infrastructure", "Healthmed.Appointment.Infrastructure\Healthmed.Appointment.Infrastructure.csproj", "{FAF1D56B-FBEE-48A2-8A51-F10DC010B45C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

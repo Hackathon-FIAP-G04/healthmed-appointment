@@ -11,6 +11,10 @@ namespace Healthmed.Appointment.Infrastructure.MongoDb.Serializers
         {
             BsonSerializer.TryRegisterSerializer(new ObjectSerializer(ObjectSerializer.AllAllowedTypes));
             BsonSerializer.TryRegisterSerializer(GuidSerializer.StandardInstance);
+            BsonSerializer.TryRegisterSerializer(new AppointmentStatusSerializer());
+            BsonSerializer.TryRegisterSerializer(new DurationSerializer());
+            BsonSerializer.TryRegisterSerializer(new PeriodSerializer());
+            BsonSerializer.TryRegisterSerializer(new PriceSerializer());
         }
     }
 }

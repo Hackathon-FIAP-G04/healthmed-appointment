@@ -5,9 +5,9 @@
         public Guid DoctorId { get; set; }
         public IEnumerable<QueryAvailableAppointmentsResponseItem> AvailableAppointments { get; set; }
 
-        public QueryAvailableAppointmentsResponse(IEnumerable<Domain.Appointment> appointments)
+        public QueryAvailableAppointmentsResponse(IEnumerable<Domain.Appointment> appointments, Guid doctorId)
         {
-            DoctorId = appointments.FirstOrDefault()?.DoctorId;
+            DoctorId = doctorId;
             AvailableAppointments = appointments.Select(x => new QueryAvailableAppointmentsResponseItem(x)).ToList();
         }
     }

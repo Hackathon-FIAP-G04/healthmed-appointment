@@ -4,6 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 using Healthmed.Appointment.Infrastructure.IoC;
 using Healthmed.Appointment.Infrastructure.MongoDb.Extensions;
 using Microsoft.AspNetCore.Builder;
+using MassTransit;
+using Healthmed.Appointment.Infrastructure.SQS;
 
 namespace Healthmed.Appointment.Infrastructure.WebAPI
 {
@@ -27,11 +29,13 @@ namespace Healthmed.Appointment.Infrastructure.WebAPI
                 });
             });
 
+            builder.Services.AddSQSQueue(builder.Configuration);
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddRepositories();
             builder.Services.AddUseCases();
             builder.Services.AddMongoDb(builder.Configuration);
+            builder.Services.AddHealthChecks();
 
             return builder;
 
@@ -39,15 +43,14 @@ namespace Healthmed.Appointment.Infrastructure.WebAPI
 
         public static WebApplication UseWebApi(this WebApplication app)
         {
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            
 
             app.UseMiddleware(typeof(CustomExceptionHandler));
             app.UseHttpsRedirection();
             app.MapControllers();
+            app.MapHealthChecks("/hc");
 
             return app;
         }

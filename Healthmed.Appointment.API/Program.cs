@@ -1,6 +1,8 @@
 using Healthmed.Appointment.Core.UseCases.AcceptAppointmentUseCase;
 using Healthmed.Appointment.Core.UseCases.CancelAppointmentUseCase;
+using Healthmed.Appointment.Core.UseCases.GenerateMonthlyAppointmentsUseCase;
 using Healthmed.Appointment.Core.UseCases.QueryAvailableAppointmentsUseCase;
+using Healthmed.Appointment.Core.UseCases.QueryPatientAppointmentsUseCase;
 using Healthmed.Appointment.Core.UseCases.RefuseAppointmentUseCase;
 using Healthmed.Appointment.Core.UseCases.RegisterAppointmentUseCase;
 using Healthmed.Appointment.Core.UseCases.RegisterServicePeriod;
@@ -24,6 +26,11 @@ app.MapGet("/appointments/available", async ([FromServices] IQueryAvailableAppoi
     return Results.Ok(await useCase.QueryAppointments(doctorId));
 });
 
+app.MapGet("/appointments", async ([FromServices] IQueryPatientAppointmentsUseCase useCase, [FromQuery] Guid patientId) =>
+{
+    return Results.Ok(await useCase.QueryAppointments(patientId));
+});
+
 app.MapPost("/servicePeriods", async ([FromServices] IRegisterServicePeriodUseCase useCase, [FromBody] RegisterServicePeriodRequest request) =>
 {
     return Results.Ok(await useCase.RegisterServicePeriod(request));
@@ -32,6 +39,12 @@ app.MapPost("/servicePeriods", async ([FromServices] IRegisterServicePeriodUseCa
 app.MapPost("/appointments", async ([FromServices] IRegisterAppointmentUseCase useCase, [FromBody] RegisterAppointmentRequest request) =>
 {
     return Results.Ok(await useCase.RegisterAppointment(request));
+});
+
+app.MapPost("/appointments/generated", async ([FromServices] IGenerateMonthlyAppointmentsUseCase useCase, [FromQuery] Guid doctorId) =>
+{
+    await useCase.GenerateAppointments(doctorId);
+    return Results.Ok();
 });
 
 app.MapPatch("/appointments/schedule", async ([FromServices] IScheduleAppointmentUseCase useCase, ScheduleAppointmentRequest request) =>

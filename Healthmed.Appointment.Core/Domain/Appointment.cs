@@ -14,6 +14,7 @@ namespace Healthmed.Appointment.Core.Domain
 
         public Appointment(SchedulingPeriod period, Id doctorId)
         {
+            Id = Id.New();
             Period = period;
             DoctorId = doctorId;
             PatientId = null;
@@ -34,6 +35,8 @@ namespace Healthmed.Appointment.Core.Domain
             AppointmentNotAcceptableException.ThrowIf(Status != AppointmentStatus.Scheduled);
 
             Status = AppointmentStatus.Accepted;
+
+            RaiseEvent(new AcceptedAppointmentDomainEvent(DoctorId, PatientId, Id, Period.StartTime, Period.EndTime));
         }
 
         public void Refuse()

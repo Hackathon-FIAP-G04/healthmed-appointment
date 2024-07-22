@@ -8,6 +8,8 @@
 
         Task<IEnumerable<Appointment>> GetAvailablesByDoctor(Id doctorId);
 
+        Task<IEnumerable<Appointment>> GetByPatient(Id patientId);
+
         Task Save(Appointment appointment);
 
         Task SaveMany(IEnumerable<Appointment> appointments);

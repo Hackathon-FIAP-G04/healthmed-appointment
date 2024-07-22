@@ -1,27 +1,41 @@
 ﻿using Healthmed.Appointment.Core.Domain;
+using Healthmed.Appointment.Infrastructure.MongoDb;
+using MongoDB.Driver;
 
 namespace Healthmed.Appointment.Infrastructure.Repositories
 {
     public class ServicePeriodRepository : IServicePeriodRepository
     {
-        public Task<IEnumerable<ServicePeriod>> GetAll()
+        private readonly IMongoCollection<ServicePeriod> _services;
+
+        public ServicePeriodRepository(IDbContext context)
         {
-            throw new NotImplementedException();
+            _services = context.Database.GetCollection<ServicePeriod>("servicePeriods");
         }
 
-        public Task<ServicePeriod> GetByDoctorId(Id doctorId)
+        public async Task<IEnumerable<ServicePeriod>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _services.Find(x => true).ToListAsync();
         }
 
-        public Task Save(ServicePeriod servicePeriod)
+        public async Task<ServicePeriod> GetByDoctorId(Id doctorId)
         {
-            throw new NotImplementedException();
+            return await _services.Find(x => x.DoctorId == doctorId).FirstOrDefaultAsync();
         }
 
-        public Task Update(ServicePeriod servicePeriod)
+        public async Task Save(ServicePeriod servicePeriod)
         {
-            throw new NotImplementedException();
+            await _services.InsertOneAsync(servicePeriod);
+        }
+
+        public async Task Update(ServicePeriod servicePeriod)
+        {
+            var update = Builders<ServicePeriod>.Update
+                .Set(a => a.Period, servicePeriod.Period)
+                .Set(a => a.Duration, servicePeriod.Duration)
+                .Set(a => a.Price, servicePeriod.Price);
+
+            await _services.UpdateOneAsync(a => a.Id == servicePeriod.Id, update, null);
         }
     }
 }

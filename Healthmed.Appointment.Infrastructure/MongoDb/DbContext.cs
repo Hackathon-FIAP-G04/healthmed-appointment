@@ -1,4 +1,5 @@
 ﻿using Healthmed.Appointment.Infrastructure.MongoDb.Configurations;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Extensions.DiagnosticSources;
 
@@ -26,6 +27,12 @@ namespace Healthmed.Appointment.Infrastructure.MongoDb
 
             Client = new MongoClient(settings);
             Database = Client.GetDatabase(configuration.Database);
+            /*
+            BsonClassMap.RegisterClassMap<Core.Domain.Appointment>(cm =>
+            {
+                cm.AutoMap();
+                cm.UnmapMember(m => m.Available);
+            });*/
         }
     }
 }

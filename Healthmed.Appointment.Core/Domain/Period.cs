@@ -19,9 +19,14 @@ namespace Healthmed.Appointment.Core.Domain
 
             InvalidPeriodException.ThrowIf
             (
-                startHour < endHour ||
+                startHour > endHour ||
                 (startHour == endHour && startMinute >= endMinute)
             );
+
+            StartHour = startHour;
+            StartMinute = startMinute;
+            EndHour = endHour;
+            EndMinute = endMinute;
         }
 
         public Period NextPeriod(int minutes)

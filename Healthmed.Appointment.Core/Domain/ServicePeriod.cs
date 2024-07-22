@@ -11,6 +11,7 @@ namespace Healthmed.Appointment.Core.Domain
 
         public ServicePeriod(Id doctorId, Period period, Duration duration, Price price)
         {
+            Id = Id.New();
             DoctorId = doctorId;
             Period = period;
             Duration = duration;
