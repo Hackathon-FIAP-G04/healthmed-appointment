@@ -48,6 +48,7 @@ namespace Healthmed.Appointment.Core.Domain
 
         public void Cancel()
         {
+            AppointmentNotCancellableException.ThrowIf(Status != AppointmentStatus.Scheduled && Status != AppointmentStatus.Accepted);
             Status = AppointmentStatus.Cancelled;
         }
     }

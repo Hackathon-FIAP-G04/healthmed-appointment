@@ -1,6 +1,8 @@
 ﻿using Healthmed.Appointment.Core.UseCases.AcceptAppointmentUseCase;
 using Healthmed.Appointment.Core.UseCases.CancelAppointmentUseCase;
+using Healthmed.Appointment.Core.UseCases.GenerateMonthlyAppointmentsUseCase;
 using Healthmed.Appointment.Core.UseCases.QueryAvailableAppointmentsUseCase;
+using Healthmed.Appointment.Core.UseCases.QueryPatientAppointmentsUseCase;
 using Healthmed.Appointment.Core.UseCases.RefuseAppointmentUseCase;
 using Healthmed.Appointment.Core.UseCases.RegisterAppointmentUseCase;
 using Healthmed.Appointment.Core.UseCases.RegisterServicePeriod;
@@ -22,6 +24,8 @@ namespace Healthmed.Appointment.Infrastructure.IoC
             builder.AddScoped<IRegisterAppointmentUseCase, RegisterAppointmentUseCase>();
             builder.AddScoped<IRegisterServicePeriodUseCase, RegisterServicePeriodUseCase>();
             builder.AddScoped<IScheduleAppointmentUseCase, ScheduleAppointmentUseCase>();
+            builder.AddScoped<IQueryPatientAppointmentsUseCase, QueryPatientAppointmentsUseCase>();
+            builder.AddScoped<IGenerateMonthlyAppointmentsUseCase, GenerateMonthlyAppointmentsUseCase>();
 
             return builder;
         }

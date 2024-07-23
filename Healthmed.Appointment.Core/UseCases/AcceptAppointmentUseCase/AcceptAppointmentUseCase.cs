@@ -1,5 +1,4 @@
-﻿using Healthmed.Appointment.Core.Abstractions;
-using Healthmed.Appointment.Core.Domain;
+﻿using Healthmed.Appointment.Core.Domain;
 using static Healthmed.Appointment.Core.Exceptions;
 
 namespace Healthmed.Appointment.Core.UseCases.AcceptAppointmentUseCase
@@ -12,12 +11,10 @@ namespace Healthmed.Appointment.Core.UseCases.AcceptAppointmentUseCase
     public class AcceptAppointmentUseCase : IAcceptAppointmentUseCase
     {
         private readonly IAppointmentRepository _repository;
-        private readonly IEventProducer _eventProducer;
 
-        public AcceptAppointmentUseCase(IAppointmentRepository repository, IEventProducer eventProducer)
+        public AcceptAppointmentUseCase(IAppointmentRepository repository)
         {
             _repository = repository;
-            _eventProducer = eventProducer;
         }
 
         public async Task AcceptAppointment(Guid appointmentId)
@@ -29,9 +26,6 @@ namespace Healthmed.Appointment.Core.UseCases.AcceptAppointmentUseCase
             appointment.Accept();
 
             await _repository.Update(appointment);
-
-            if(appointment.Events.Any())
-                await _eventProducer.Send(appointment.Events);
         }
     }
 }

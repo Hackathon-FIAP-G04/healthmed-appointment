@@ -14,11 +14,13 @@
 
     public class QueryAvailableAppointmentsResponseItem
     {
+        public Guid AppointmentId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
         public QueryAvailableAppointmentsResponseItem(Domain.Appointment appointment)
         {
+            AppointmentId = appointment.Id;
             StartTime = appointment.Period.StartTime;
             EndTime = appointment.Period.EndTime;
         }

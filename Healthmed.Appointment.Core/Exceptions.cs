@@ -23,5 +23,7 @@ namespace Healthmed.Appointment.Core
 
         public class InvalidPriceException() : DomainException<InvalidPriceException>("The price amount must be equal or greater than 0");
 
+        public class AppointmentNotCancellableException() : DomainException<AppointmentNotCancellableException>("Only scheduled or accepted appointments can be cancelled");
+
     }
 }
