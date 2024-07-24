@@ -3,12 +3,14 @@
     public class QueryAvailableAppointmentsResponse
     {
         public Guid DoctorId { get; set; }
+        public decimal Price { get; set; }
         public IEnumerable<QueryAvailableAppointmentsResponseItem> AvailableAppointments { get; set; }
 
-        public QueryAvailableAppointmentsResponse(IEnumerable<Domain.Appointment> appointments, Guid doctorId)
+        public QueryAvailableAppointmentsResponse(IEnumerable<Domain.Appointment> appointments, Guid doctorId, decimal price)
         {
             DoctorId = doctorId;
             AvailableAppointments = appointments.Select(x => new QueryAvailableAppointmentsResponseItem(x)).ToList();
+            Price = price;
         }
     }
 

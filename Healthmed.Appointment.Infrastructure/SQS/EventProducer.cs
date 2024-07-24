@@ -1,9 +1,11 @@
 ﻿using Healthmed.Appointment.Core.Abstractions;
 using MassTransit;
 using Microsoft.Extensions.Options;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Healthmed.Appointment.Infrastructure.SQS
 {
+    [ExcludeFromCodeCoverage]
     public class EventProducer : IEventProducer
     {
         private readonly ISendEndpointProvider _sendEndpointProvider;

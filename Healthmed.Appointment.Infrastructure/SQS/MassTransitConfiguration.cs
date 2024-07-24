@@ -1,5 +1,8 @@
-﻿namespace Healthmed.Appointment.Infrastructure.SQS
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Healthmed.Appointment.Infrastructure.SQS
 {
+    [ExcludeFromCodeCoverage]
     public class MassTransitConfiguration
     {
         public string Region { get; set; }

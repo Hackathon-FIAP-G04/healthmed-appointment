@@ -24,27 +24,30 @@ namespace Healthmed.Appointment.Core.UseCases.GenerateMonthlyAppointmentsUseCase
         {
             var servicePeriod = await _periodRepository.GetByDoctorId(doctorId);
 
-            var appointmentsToRegister = new List<Domain.Appointment>();
-
-            for (int day = 1; day <= _daysToSchedule; day++)
+            if(servicePeriod != null)
             {
-                var startTime = DateTime.Now.AddDays(day).Date.AddHours(servicePeriod.Period.StartHour).AddMinutes(servicePeriod.Period.StartMinute);
-                var appointmentPeriod = new SchedulingPeriod(startTime, servicePeriod.Duration);
+                var appointmentsToRegister = new List<Domain.Appointment>();
 
-                do
+                for (int day = 1; day <= _daysToSchedule; day++)
                 {
-                    var appointmentToAdd = new Domain.Appointment(appointmentPeriod, servicePeriod.DoctorId);
+                    var startTime = DateTime.Now.AddDays(day).Date.AddHours(servicePeriod.Period.StartHour).AddMinutes(servicePeriod.Period.StartMinute);
+                    var appointmentPeriod = new SchedulingPeriod(startTime, servicePeriod.Duration);
 
-                    appointmentsToRegister.Add(appointmentToAdd);
+                    do
+                    {
+                        var appointmentToAdd = new Domain.Appointment(appointmentPeriod, servicePeriod.DoctorId);
 
-                    appointmentPeriod = appointmentPeriod.Next(servicePeriod.Duration);
+                        appointmentsToRegister.Add(appointmentToAdd);
 
-                } while (appointmentPeriod.EndTime.Hour > servicePeriod.Period.EndHour ||
-                        appointmentPeriod.EndTime.Hour == servicePeriod.Period.EndHour &&
-                         appointmentPeriod.EndTime.Minute > servicePeriod.Period.EndMinute);
+                        appointmentPeriod = appointmentPeriod.Next(servicePeriod.Duration);
+
+                    } while (appointmentPeriod.EndTime.Hour > servicePeriod.Period.EndHour ||
+                            appointmentPeriod.EndTime.Hour == servicePeriod.Period.EndHour &&
+                             appointmentPeriod.EndTime.Minute > servicePeriod.Period.EndMinute);
+                }
+
+                await _appointmentRepository.SaveMany(appointmentsToRegister);
             }
-
-            await _appointmentRepository.SaveMany(appointmentsToRegister);
         }
     }
 }

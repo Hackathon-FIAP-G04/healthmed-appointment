@@ -6,7 +6,7 @@ namespace Healthmed.Appointment.Core.UseCases.RegisterServicePeriod
     {
         public RegisterServicePeriodResponse(ServicePeriod servicePeriod)
         {
-            DoctorId = servicePeriod.Id;
+            DoctorId = servicePeriod.DoctorId;
             StartTime = new(servicePeriod.Period.StartHour, servicePeriod.Period.StartMinute);
             EndTime = new(servicePeriod.Period.EndHour, servicePeriod.Period.EndMinute);
             Duration = servicePeriod.Duration;

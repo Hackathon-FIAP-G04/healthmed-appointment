@@ -50,6 +50,9 @@ namespace Healthmed.Appointment.Core.Domain
             else
                 endMinutes = minutesAdded + minutes;
 
+            if (hours + hoursToAdd >= 24)
+                hours -= 24;
+
             return (hours + hoursToAdd, endMinutes);
         }
     }

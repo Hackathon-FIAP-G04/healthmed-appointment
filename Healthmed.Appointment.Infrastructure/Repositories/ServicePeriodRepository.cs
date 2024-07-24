@@ -1,9 +1,11 @@
 ﻿using Healthmed.Appointment.Core.Domain;
 using Healthmed.Appointment.Infrastructure.MongoDb;
 using MongoDB.Driver;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Healthmed.Appointment.Infrastructure.Repositories
 {
+    [ExcludeFromCodeCoverage]
     public class ServicePeriodRepository : IServicePeriodRepository
     {
         private readonly IMongoCollection<ServicePeriod> _services;

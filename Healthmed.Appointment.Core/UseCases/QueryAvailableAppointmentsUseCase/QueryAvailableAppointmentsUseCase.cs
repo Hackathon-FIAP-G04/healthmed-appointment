@@ -10,17 +10,21 @@ namespace Healthmed.Appointment.Core.UseCases.QueryAvailableAppointmentsUseCase
     public class QueryAvailableAppointmentsUseCase : IQueryAvailableAppointmentsUseCase
     {
         private readonly IAppointmentRepository _appointmentsRepository;
+        private readonly IServicePeriodRepository _servicePeriodRepository;
 
-        public QueryAvailableAppointmentsUseCase(IAppointmentRepository appointmentsRepository)
+        public QueryAvailableAppointmentsUseCase(IAppointmentRepository appointmentsRepository, IServicePeriodRepository servicePeriodRepository)
         {
             _appointmentsRepository = appointmentsRepository;
+            _servicePeriodRepository = servicePeriodRepository;
         }
 
         public async Task<QueryAvailableAppointmentsResponse> QueryAppointments(Guid doctorId)
         {
             var appointments = await _appointmentsRepository.GetAvailablesByDoctor(doctorId);
 
-            return new(appointments, doctorId);
+            var servicePeriod = await _servicePeriodRepository.GetByDoctorId(doctorId);
+
+            return new(appointments, doctorId, servicePeriod.Price);
         }
     }
 }
