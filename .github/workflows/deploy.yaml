@@ -9,7 +9,7 @@ jobs:
 
     env:
       IMAGE_NAME: healthmed-appointment
-      PROJECT_NAME: HealthMed.Appointment.API
+      PROJECT_NAME: Healthmed.Appointment.API
       AWS_EKS_CLUSTER_NAME: healthmed-cluster
       AWS_REGION: us-east-1
 
