@@ -9,7 +9,6 @@ jobs:
 
     env:
       IMAGE_NAME: healthmed-appointment
-      ROOT_PROJECT_DIRECTORY: src
       PROJECT_NAME: HealthMed.Appointment.API
       AWS_EKS_CLUSTER_NAME: healthmed-cluster
       AWS_REGION: us-east-1
@@ -44,7 +43,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }} --file ${{ env.PROJECT_NAME}}/Dockerfile
+            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }} --file ${{ env.PROJECT_NAME}}/Dockerfile .
             docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}
         env:
             DOCKER_BUILDKIT: 1
